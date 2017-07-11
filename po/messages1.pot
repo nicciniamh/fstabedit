@@ -1,0 +1,136 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-28 15:45-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: fsedit.glade:26
+msgid "_File"
+msgstr ""
+
+#: fsedit.glade:34
+msgid "New _Filesystem"
+msgstr ""
+
+#: fsedit.glade:107
+msgid "_Help"
+msgstr ""
+
+#: fsedit.glade:138
+msgid "Currently Defined Filesystems\n"
+msgstr ""
+
+#: fsedit.glade:185
+msgid "About Filesystem Editor"
+msgstr ""
+
+#: fsedit.glade:213
+msgid ""
+"Filesystem Editor\n"
+"Edits filesystems for Linux in /etc/fstab\n"
+"\n"
+"Copyright 2017 Nicole Stevens"
+msgstr ""
+
+#: fsentry.glade:30
+msgid "File System Entry Editor"
+msgstr ""
+
+#: fsentry.glade:46
+msgid "Device Type"
+msgstr ""
+
+#: fsentry.glade:57
+msgid "Mount Point"
+msgstr ""
+
+#: fsentry.glade:68
+msgid "Filesystem Type"
+msgstr ""
+
+#: fsentry.glade:79
+msgid "Common Options"
+msgstr ""
+
+#: fsentry.glade:90
+msgid "Dump Frequency"
+msgstr ""
+
+#: fsentry.glade:101
+msgid "Check Pass"
+msgstr ""
+
+#: fsentry.glade:112
+msgid ""
+"The device type for this entry. This is used as a hint for how the program "
+"looks for candidate devices. \n"
+"Device: Use a partition in /dev. \n"
+"UUID: use the device UUID.\n"
+"Label: use a filesystem label.\n"
+"File: use a filesystem object. \n"
+"Path: free-form entry that do not fit above or for devices not present at "
+"runtime. "
+msgstr ""
+
+#: fsentry.glade:129 fsentry.glade:193
+msgid ""
+"Select the fiesystem type. If not listed, Other may be used and the type can "
+"be entered manually."
+msgstr ""
+
+#: fsentry.glade:141
+msgid ""
+"This field is used by dump(8) to determine which filesystems need to be "
+"dumped. Defaults to zero (don't dump) if not present."
+msgstr ""
+
+#: fsentry.glade:155
+msgid ""
+"This field is used by fsck(8) to determine the order in which filesystem "
+"checks are done at boot time. The root filesystem should be specified with a "
+"fs_passno of 1. Other filesystems should have a fs_passno of 2. Filesystems "
+"within a drive will be checked sequentially, but filesystems on different "
+"drives will be checked at the same time to utilize parallel‐ism available in "
+"the hardware. Defaults to zero (don't fsck) if not present.\n"
+msgstr ""
+
+#: fsentry.glade:170
+msgid "Node"
+msgstr ""
+
+#: fsentry.glade:181
+msgid ""
+"Options passed to mount(8) for mounting your filesystem. Not all options are "
+"available to all filesystem types and may cause errors in mounting. "
+msgstr ""
+
+#: fsentry.glade:205
+msgid ""
+"Common filesystem options. Selecting here will add to list of options on the "
+"right. "
+msgstr ""
+
+#: fsentry.glade:217
+msgid "File System Options"
+msgstr ""
+
+#: fsentry.glade:252
+msgid "Select or create a direcroty on which to mount this filesyste,. "
+msgstr ""
+
+#: fsentry.glade:254
+msgid "Select mount point"
+msgstr ""

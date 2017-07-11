@@ -1,0 +1,68 @@
+<!doctype HTML>
+<head>
+<title>Filesystem Table Editor</title>
+</head>
+<body>
+<h1><img src="disk-stack.png" height="48" width="48">Filesystem Table Editor</h1><h1>Entry Editor</h1>
+<h2>Overview</h2>
+<p>For each filesystem there is an entry in <a href="http://man7.org/linux/man-pages/man5/fstab.5.html">fstab(5)</a>. There are six fields for each entry: node, mount point, filesystem type, file system options, fs freq, and fspassno. I have added another virtual field, <em>Device Type</em></p>
+<p>Device type is determined by how the entry is formatted. For example, if an entry's node is 
+LABEL=foo, the <em>Device Type</em> *will be LABEL. This helps other widgets in the editor to find 
+partitions using those types of values. Of course, certain filesystems may fall outside 
+of those defintions, and, in those cases as free-form entry is provided. </p>
+<h2>Device Types</h2>
+<ul>
+<li><em>Device</em>:
+Use a system device, such as /dev/sda1. The program locates all device candidates by looking in <em>/proc/partitions</em></li>
+<li>
+<p><em>UUID</em>:
+    Use a partition specified by the filesystem's UUID. This the most persistent way of referring to a filesystem since the UUID of the filesystem is not likely to change unless re-created. Even if the physical device number changes the UUID will still match. Filesystem UUID formats are dependent on the filesystem format. </p>
+</li>
+<li>
+<p><em>PARTUUID</em>:
+    Use a partition specified by the partition's UUID. Much like UUID, but, in unusual situations an existing filesystem image may be written to a new partition changing the partition UUID. This only makes sense with gpt partition tables.</p>
+</li>
+<li>
+<p><em>LABEL</em>:
+    Much like UUID the label is tied to the filesystem. It may not, however be unique (but should be). The way a label is set in the filesystem is dependent on the filesystem format. </p>
+</li>
+<li>
+<p><em>PARTLABEL</em>:
+    Again, like LABEL this is a label assigned to the partition. This only make sense with gpt partition tables.</p>
+</li>
+<li>
+<p><em>File</em>:
+    A filename to be used for a filesystem. This file can be selected with the normal Gtk file selection widgets. </p>
+</li>
+<li>
+<p><em>Path</em>:
+    A free-form entry. This will be set if the parition's node does not match any of the above. An example of a <em>Path</em> *device type would be for a SSH filesystem (sshfs) where you specify node:path. </p>
+</li>
+</ul>
+<p>When the filesystem entry is written, only UUID,PARTUUID,LABEL,PARTLABEL are used in the node section. Otherwise, just the node without the device type is used. </p>
+<h1>Form fields.</h1>
+<h2><em>Device Type</em></h2>
+<p>The <em>Device Type</em> field allows you to select a one of the above device types. For device types of UUID,PARTUUID,LABEL.PARTLABEL or Device, the program attempts to find the appropriate entry for the in the <em>Node</em> field for same device, so if you have /dev/sda1 with a UUID of abcd134-a3253fs-352dsvdv and you switch from Device to UUID, then abcd134-a3253fs-352dsvdv will now be selected in the <em>Node</em> field. The entries in the <em>Node</em> field, now, all be the known filesytem UUID's on the system. </p>
+<h2><em>Node</em></h2>
+<p>The contents of the node field are populated based on the selection in the <em>Device Type</em> field. Not all systems will have any or all of these. These values are probed from the system iteself.
+The <em>Node</em> field gets populated, by device type, as follows:</p>
+<ul>
+<li>Device - All known disk partitions on the system, from /proc/partitions.</li>
+<li>UUID - All known filesystem UUID's on the system, from /dev/disk/by-uuid.</li>
+<li>LABEL - All known filesystem labels on the system, from /dev/disk/by-label.</li>
+<li>PARTUUID - All known partition UUID's on the system, from /dev/disk/by-partuuid. </li>
+<li>PARTLABEL - All known partition labels on the system, from /dev/disk/by-partlabel. </li>
+<li>File - A file selection widget is provided to open a file to be used as a filesystem-on-file. </li>
+<li>Path - A free-form entry that is used verbatim. This is useful for remote filesystems, or, for specifying a device type that doesn't exist. Since this is not checked for format, be sure this field is correct. </li>
+</ul>
+<h2>Filesystem Type</h2>
+<p>The <em>Filesystem Type</em> field is populated from a few common fuse systems, swap, entries in /proc/fillesystems and looking in /lib/<code>uname -r</code>/kernel/fs/ for any filesystem modules. If the filesystem needed is not present, it may be specified by selecting "Other..." and entering it to the right. When changing the filesystem type, there is warning. Typically the probed value for the filesystem type should be used. </p>
+<h2>Filesystem Options and Common Options</h2>
+<p>The <em>Filesystem Options</em> field is a free-form entry field that specifies the options for the filesystem. Several common options are in the <em>Common Options</em> dropdown. When a common option is selected, and, is not already present in the options field, it will be appended to the options. </p>
+<h2>Dump Frequency</h2>
+<p>From the <a href="http://man7.org/linux/man-pages/man5/fstab.5.html">fstab(5)</a> page: "This field is used by dump(8) to determine which filesystems need to be dumped." An entry of zero means this file system is ignored by dump(8)</p>
+<h2>Check Pass</h2>
+<p>This field is used by <a href="http://man7.org/linux/man-pages/man8/fsck.8.html">fsck(8)</a> to determine the order in which filesystem checks are done at boot time. The root filesystem should be specified with a fs_passno of 1.  Other filesystems should have a fs_passno of 2.  Filesystems within a drive will be checked sequentially, but filesystems on different drives will be checked at the same time to utilize paralelism available in the hardware.  Defaults to zero (don't fsck) if not present.</p>
+<h1>Partitions Overview</h1>
+<p>Clicking the button will show an overview of all of the partitions probed and their associated metadata. </p></body>
+</html>

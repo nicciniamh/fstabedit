@@ -1,0 +1,9 @@
+[Desktop Entry]
+Verison=0.1
+Name=Filesystem Table Editor
+Type=Application
+Categories=System
+Icon=drive-harddisk
+Exec=/usr/bin/gksudo --description /usr/share/applications/fstabedit.desktop @EXEC
+Terminal=false
+Path=@PATH
