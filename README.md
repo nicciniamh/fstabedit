@@ -1,6 +1,6 @@
-#Filesystem Table Editor For Linux
+# Filesystem Table Editor For Linux
 
-***This program is very very alpha!!! BACK UP SYSTEM FILES FIRST! ***
+** *This program is very very alpha!!! BACK UP SYSTEM FILES FIRST!* **
 
 
 When /etc/fstab is saved it will be backed up to /etc/fstab~ 
