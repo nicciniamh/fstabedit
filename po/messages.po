@@ -1,0 +1,116 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-15 10:09-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: fstabedit.py:43
+msgid "Filesystem Table Editor"
+msgstr ""
+
+#: fstabedit.py:63 lib/fstab.py:40
+msgid "Device"
+msgstr ""
+
+#: fstabedit.py:63 lib/fstab.py:44
+msgid "Mount Point"
+msgstr ""
+
+#: fstabedit.py:63
+msgid "Type"
+msgstr ""
+
+#: fstabedit.py:78
+msgid ""
+"You are not root. Changes may not be saved.\n"
+"Continue?"
+msgstr ""
+
+#: fstabedit.py:141 fstabedit.py:171
+msgid ""
+"Changes to {} have not been saved?\n"
+"Continue?"
+msgstr ""
+
+#: fstabedit.py:146
+msgid "Please choose a file"
+msgstr ""
+
+#: fstabedit.py:157
+msgid "Cannot open {}: {}"
+msgstr ""
+
+#: fstabedit.py:183 fstabedit.py:201
+msgid "Cannot save {}: {}"
+msgstr ""
+
+#: fstabedit.py:186
+msgid "Save Filesystem Table as..."
+msgstr ""
+
+#: fstabedit.py:243
+msgid ""
+"Changes to {} have not been saved?\n"
+"Do you wish to quit without saving?"
+msgstr ""
+
+#: lib/fsentry.py:141
+msgid "Choose filesytem file"
+msgstr ""
+
+#: lib/fsentry.py:158
+msgid "No mount pount."
+msgstr ""
+
+#: lib/fsentry.py:182
+msgid "(New Entry)"
+msgstr ""
+
+#: lib/fsentry.py:317
+msgid ""
+"Changing the filesystem type from what is detected\n"
+"may cause problems mounting the partition."
+msgstr ""
+
+#: lib/fsentry.py:371
+msgid "No filesystem options selected, using 'defaults'"
+msgstr ""
+
+#: lib/fsentry.py:375
+msgid ""
+"Error(s): These field(s) need values:\n"
+"{}"
+msgstr ""
+
+#: lib/fstab.py:42
+msgid "Device Type"
+msgstr ""
+
+#: lib/fstab.py:46
+msgid "Filesystem Options"
+msgstr ""
+
+#: lib/fstab.py:171
+msgid ""
+"Cannot backup original file\n"
+"{}"
+msgstr ""
+
+#: lib/fstab.py:181
+msgid ""
+"Cannot write to {}\n"
+"{}"
+msgstr ""
