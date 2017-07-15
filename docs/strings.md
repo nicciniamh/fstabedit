@@ -1,0 +1,2 @@
+# A note about strings. 
+# for user messages, please format strings as _("blah blah blah") verus "blah blah blah". It is preferred that strings a user sees be enclosed in double quotes, versus singular for internal strings. 
