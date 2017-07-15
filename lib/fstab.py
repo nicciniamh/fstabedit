@@ -33,6 +33,7 @@ class fsentry:
                 setattr(self,k,v)
         if self.dev == '':
             self.setNew()
+            
     def check(self):
         errors = []
         if self.dev == '':

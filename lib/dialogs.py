@@ -14,8 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import gi, os, datetime
-import collections
+import gi, os, collections
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk
 
@@ -27,8 +26,9 @@ class messageDlg:
                              'YESNO':       Gtk.ButtonsType.YES_NO,
                              'CLOSE':       Gtk.ButtonsType.CLOSE,
              }
+        self.custom_buttons = None
         mtype='error'
-        buttons = Gtk.ButtonsType.OK
+        self.buttons = Gtk.ButtonsType.OK
         self.response_handler = None
         if 'response_handler' in kwargs:
             self.response_handler = kwargs['response_handler']
@@ -42,10 +42,16 @@ class messageDlg:
 
 
         if 'buttons' in kwargs:
+          if kwargs['buttons']:
             if kwargs['buttons'] in self.buttonTypes:
-                buttons = self.buttonTypes[kwargs['buttons']]
+                self.buttons = self.buttonTypes[kwargs['buttons']]
             else:
                 raise ValueError('Cannot map "{}" to Gtk.ButtonType'.format(kwargs['buttons']))
+          else:
+            self.buttons = None
+
+        if 'custom_buttons' in kwargs:
+          self.custom_buttons = kwargs['custom_buttons']
 
         estr = ''
 
@@ -56,17 +62,26 @@ class messageDlg:
         elif mtype == 'info':
             mtype = Gtk.MessageType.INFO
 
-        self.dlg = Gtk.MessageDialog(parent=parent,
-                          flags=Gtk.DialogFlags.MODAL,
-                          type=mtype,
-                          buttons=buttons,
-                          message_format=msg)
+        if self.buttons:
+          self.dlg = Gtk.MessageDialog(parent=parent,
+                            flags=Gtk.DialogFlags.MODAL,
+                            type=mtype,
+                            buttons=self.buttons,
+                            message_format=msg)
+        else:
+          self.dlg = Gtk.MessageDialog(parent=parent,
+                            flags=Gtk.DialogFlags.MODAL,
+                            type=mtype,
+                            message_format=msg)
+
+        if not self.buttons and len(self.custom_buttons):
+          for bt,bid in self.custom_buttons:
+            self.dlg.add_button(bt,bid)
 
         if 'title' in kwargs:
           self.dlg.set_secondary_text(kwargs['title'])
 
-        if isinstance(self.response_cb, collections.Callable):
-          self.dlg.connect("response", self.response_cb)
+        self.dlg.connect("response", self.response_cb)
 
     def response_cb(self,widget, response):
         if isinstance(self.response_handler, collections.Callable):
@@ -84,3 +99,12 @@ def question(msg,responseHandler=None, mtype='warn', buttons='YESNO',**kwargs):
 def message(msg,responseHandler=None, mtype='info', buttons='OK',**kwargs):
     x = messageDlg(msg,mtype=mtype, buttons=buttons, response_handler=responseHandler,**kwargs)
     return x.dlg.run()
+
+if __name__ == "__main__":
+  def resp(*args):
+    print('response',args)
+
+  question("Unsaved changes!", buttons=None, responseHandler=resp,
+    custom_buttons = [('Close Without Saving',Gtk.ResponseType.CLOSE),
+                      ('Cancel',Gtk.ResponseType.CANCEL),
+                      ('Save',42)])

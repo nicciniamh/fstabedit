@@ -80,15 +80,17 @@ class entry:
                         }
 
         if not fsent:
+            debug.debug('Creting new fsentry')
             self.fsent = fstab.fsentry()
         else:
             self.fsent = fsent
-        self.dev = fsent.dev
+        debug.debug('fsentry is',self.fsent)
+        self.dev = self.fsent.dev
         for k in ['dev','devtype','mountpoint','fstype','fsopts','fsfreq','fspass']:
-            setattr(self,k,fsent.__dict__[k])
+            setattr(self,k,self.fsent.__dict__[k])
         try:
             if self.devtype in devTypeKeyed and self.devtype != 'Device':
-                self.devtype = fsent.devtype.upper()
+                self.devtype = self.fsent.devtype.upper()
             else:
                 self.devtype = self.devtype.title()
         except ValueError:
@@ -162,17 +164,17 @@ class entry:
 
         self.cb_fstype.set_active_text(self.fstype)
         if self.fstype == None or not self.fstype in fsTypeMap:
-            self.entry_otherfstype.set_text(fsent.fstype)
+            self.entry_otherfstype.set_text(self.fsent.fstype)
             self.entry_otherfstype.show()
         else:
             self.entry_otherfstype.hide()
 
         self.entry_node.set_text(self.dev)
-        self.sb_fsfreq.set_value(fsent.fsfreq)
-        self.sb_fspass.set_value(fsent.fspass)
-        self.entry_fsopts.set_text(fsent.fsopts)
+        self.sb_fsfreq.set_value(self.fsent.fsfreq)
+        self.sb_fspass.set_value(self.fsent.fspass)
+        self.entry_fsopts.set_text(self.fsent.fsopts)
         if self.fsent.mountpoint != '':
-            self.dir_mountpoint.set_filename(fsent.mountpoint)
+            self.dir_mountpoint.set_filename(self.fsent.mountpoint)
 
         if self.dev != '':
             self.title = '{}'.format(self.dev)
@@ -330,7 +332,10 @@ class entry:
             co = widget.get_active_text()
             opts = self.entry_fsopts.get_text()
             if not co in opts:
-                opts = '{},{}'.format(opts,co)
+                if opts == '':
+                    opts = co
+                else:
+                    opts = '{},{}'.format(opts,co)
                 self.entry_fsopts.set_text(opts)
                 self.setModified()
             return
@@ -361,6 +366,10 @@ class entry:
             self.fsent.fstype = fstype
             self.fsent.fsfreq = self.sb_fsfreq.get_value_as_int()
             self.fsent.fspass = self.sb_fspass.get_value_as_int()
+            self.fsent.fsopts = self.entry_fsopts.get_text()
+            if self.fsent.fsopts == '':
+                dialogs.message(_("No filesystem options selected, using 'defaults'"),parent=self.window)
+                self.fsent.fsopts = 'defaults'
             status, errors = self.fsent.check()
             if not status:
                 dialogs.error(_("Error(s): These field(s) need values:\n{}").format(', '.join(errors)))
@@ -373,30 +382,35 @@ class entry:
         self.window.close()
 
     def formatOverview(self,*args):
-        fkeys = ['device','type','label','uuid', 'partlabel','partuuid']
+        deviceOverview(self.devices)
+
+def deviceOverview(devices=None):
+    if not devices:
+        devices = diskdevs.devices()
+    fkeys = ['device','type','label','uuid', 'partlabel','partuuid']
+    line = '<tr>'
+    for f in fkeys:
+        line = '{}<th>{}</th>'.format(line,f)
+    line = line + '</tr>'
+    lines = [line]
+    devlist = list(devices.partitions.keys())
+    devlist.sort()
+    for dev in devlist:
         line = '<tr>'
         for f in fkeys:
-            line = '{}<th>{}</th>'.format(line,f)
-        line = line + '</tr>'
-        lines = [line]
-        devlist = list(self.devices.partitions.keys())
-        devlist.sort()
-        for dev in devlist:
-            line = '<tr>'
-            for f in fkeys:
-                if f in self.devices.partitions[dev]:
-                    fdata = self.devices.partitions[dev][f]
-                else:
-                    fdata = ''
-                line = '{}<td>{}</td>'.format(line,fdata)
-            line = line + '</td>'
-            lines.append(line)
-        htmldoc = '''
-        <html>
-        <body>
-        <table border="0">
-        {}
-        </table>
-        </body>
-        </html>'''.format('\n'.join(lines))
-        b = browser.browserDoc(wintitle="Device Overview",doctext=htmldoc)#, parent=self.window)
+            if f in devices.partitions[dev]:
+                fdata = devices.partitions[dev][f]
+            else:
+                fdata = ''
+            line = '{}<td>{}</td>'.format(line,fdata)
+        line = line + '</td>'
+        lines.append(line)
+    htmldoc = '''
+    <html>
+    <body>
+    <table border="0">
+    {}
+    </table>
+    </body>
+    </html>'''.format('\n'.join(lines))
+    b = browser.browserDoc(wintitle="Device Overview",doctext=htmldoc)    

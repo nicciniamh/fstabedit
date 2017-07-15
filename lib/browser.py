@@ -174,8 +174,8 @@ class browserDoc:
         for button in [self.home_button,self.back_button,self.fwd_button]:
             button.connect('clicked',self.navButtonClicked)
         self.close_button = builder.get_object('close')
-        self.window.connect('delete-event',self.weDone)
-        self.close_button.connect('clicked',self.weDone)
+        self.window.connect('delete-event',self.quit)
+        self.close_button.connect('clicked',self.quit)
 
         self.view = WebKit.WebView()
         self.view.connect('navigation-policy-decision-requested',self.navPolicyReq)
@@ -208,10 +208,6 @@ class browserDoc:
         return os.path.join(base,filename)
 
     def viewFile(self):
-        if os.path.splitext(self.input)[1] == '.md':
-            path = self.normalizeLocalFile(self.input)
-            self.doctext = parser.mdToHtml(open(path).read())
-            return self.viewString()
         self.setupWindow()
         self.view.load_uri(self.input)
 
@@ -252,19 +248,10 @@ class browserDoc:
                 w.set_opacity(.75)
 
     def navPolicyReq(self,widget,frame,req,action,decision):
-        uri = req.get_uri()
-        if uri:
-            if not re.match(r'(http.?://)',uri) and uri.endswith('.md'):
-                path = self.normalizeLocalFile(uri)
-                self.doctext = parser.mdToHtml(open(path).read())
-                self.viewString()
-                #WebKit.WebPolicyDecision().ignore
-                decision.ignore()
-
         self.setButtons()
         return False
 
-    def weDone(self,*args):
+    def quit(self,*args):
         if standalone:
             Gtk.main_quit()
         else:

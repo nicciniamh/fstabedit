@@ -75,7 +75,7 @@ class App:
                 def response(response):
                     if response != Gtk.ResponseType.YES:
                         self.app.quit()
-                dialogs.question(_("You are not root. Changes may not be saved.\nContinue?"),response)
+                dialogs.question(_("You are not root. Changes may not be saved.\nContinue?"),response,parent=self.window)
 
     def error(self,message,*args):
         if len(args):
@@ -187,6 +187,7 @@ class App:
             Gtk.FileChooserAction.SAVE,
             (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
              Gtk.STOCK_SAVE, Gtk.ResponseType.OK), parent=self.window)
+        dialog.set_filename(self.filename)
 
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
@@ -195,14 +196,17 @@ class App:
                 self.fstab.write(filename)
                 self.filename = filename
                 self.setModified(False)
+                response = Gtk.ResponseType.OK
             except Exception as e:
                 self.error(_("Cannot save {}: {}").format(filename,e))
+                response = Gtk.ResponseType.CANCEL
+
 
         elif response == Gtk.ResponseType.CANCEL:
             debug.debug("Cancel clicked")
-
         dialog.destroy()
-
+        return response
+ 
     def cb_FileQuit(self, *args):
         if not self.checkShutdown():
             self.app.quit()
@@ -225,14 +229,29 @@ class App:
     def checkShutdown(self):
         rval = [False]
         def response_cb(response):
-            if response == Gtk.ResponseType.YES:
+            if response == Gtk.ResponseType.CLOSE:
                 rval[0] = False
-            else:
+            elif response == 42:
+                response = self.cb_FileSaveAs()
+                if response == Gtk.ResponseType.CANCEL:
+                    rval[0] = True
+                else:
+                    rval[0] = False
+            else: # Cancel
                 rval[0] = True
         if self.modified:
-            dialogs.question(_("Changes to {} have not been saved?\nDo you wish to quit?").format(self.filename),response_cb,parent=self.window)
+            dialogs.question(_("Changes to {} have not been saved?\nDo you wish to quit without saving?").format(self.filename),
+                response_cb,
+                buttons=None,
+                custom_buttons = [('Close Without Saving',Gtk.ResponseType.CLOSE),
+                      ('Cancel',Gtk.ResponseType.CANCEL),
+                      ('Save',42)],
+                parent=self.window)
         rval = rval[0]
         return rval
+
+    def cb_helpOverview(self,*args):
+        fsentry.deviceOverview()
 
     def editfsEntry(self,index):
         def callbackfn(data):
@@ -253,9 +272,14 @@ class App:
             x = fsentry.entry(self.window,None,callbackfn)
 
 if __name__ == "__main__":
+    def enableDebug():
+        debug.setdebug(True)
+    debug.setdebug(False)
+    specialOps = [('-d',enableDebug),('--debug',enableDebug)]
+    for op in specialOps:
+        if op[0] in sys.argv:
+            sys.argv.remove(op[0])
+            op[1]()
+    debug.debug('Debugging mode is set to {}'.format(debug.getdebug()))
     app = App()
-    df = False
-    if '-d' in sys.argv or '--debug' in sys.argv:
-        df = True
-    debug.setdebug(df)
-    app.run([sys.argv[0]])
+    app.run(sys.argv)
