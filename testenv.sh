@@ -9,10 +9,7 @@
 # Place this script in <test-environment> and run with bash testenv.sh as your user.
 #
 if [ ! "$1" == "doit" ] ; then
-<<<<<<< HEAD
-=======
     # Get user and group info before we sudo into root.
->>>>>>> 97c8c35afa6f1dd05e757fa3a05058cdfe12653f
     user=$(whoami)
     groups=$(id -G | sed 's/ /,/g')
     echo "This program must be run as the super-user. If prompted, please enter YOUR password" 
@@ -21,7 +18,6 @@ if [ ! "$1" == "doit" ] ; then
 fi
 user=$2
 groups=$3
-#export DISPLAY=:0
 sysdirs_pre="srv proc boot dev root sbin usr var run home lib opt bin lib64 sys lib32 tmp"
 sysdirs_post="dev/ptmx dev/pts/"
 userdirs="$(echo $HOME | sed -e 's/^\///g')"
@@ -37,10 +33,6 @@ for d in  $userdirs; do
     mkdir -p $d
     mount --bind /$d ./$d
 done
-<<<<<<< HEAD
-#echo chroot --userspec=$user:$user --groups=$groups . /bin/bash --login
-=======
->>>>>>> 97c8c35afa6f1dd05e757fa3a05058cdfe12653f
 chroot --userspec=$user:$user --groups=$groups . /bin/bash --login
 for d in $userdirs ; do
     umount $d
