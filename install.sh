@@ -587,7 +587,7 @@ in a specified folder, and install the destktop file.
 
 EOF
 getVariable destpath "Enter destination directory for program, libraries and data" "/usr/local/fstabedit"
-getVariable bindir "Enter directory to store executable" "/usr/local/bin"
+getVariable bindir "Enter Directory to store executable" "/usr/local/bin"
 startscript="${bindir}/fstabedit"
 desktop=fstabedit.desktop
 mkdir -p "$destpath"
