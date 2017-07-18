@@ -4,9 +4,7 @@ A GUI for editing the linux filesystem table.
 
 This program is very linux specific. It might run on other *NIX systems but don't count on it and that mode of operation is unsupported.
 
-**This program is very very alpha!!!**
-
-BACK UP SYSTEM FILES FIRST! 
+Before testing **BACK UP SYSTEM FILES FIRST!**
 
 
 When /etc/fstab is saved it will be backed up to /etc/fstab~ 
