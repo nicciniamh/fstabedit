@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import os, sys, pathlib, gi, re
+import os, sys, pathlib, gi, re, webbrowser
 gi.require_version('Gtk', '3.0')
 gi.require_version('WebKit', '3.0')
 from gi.repository import Gtk, GObject, Gdk, WebKit
@@ -248,6 +248,10 @@ class browserDoc:
                 w.set_opacity(.75)
 
     def navPolicyReq(self,widget,frame,req,action,decision):
+        uri =  req.get_uri()
+        if re.match(r'(http.?://)',uri):
+            WebKit.WebPolicyDecision.ignore(decision)
+            webbrowser.open(uri)
         self.setButtons()
         return False
 
