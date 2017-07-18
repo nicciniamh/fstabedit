@@ -182,6 +182,15 @@ class App:
         except Exception as e:
             self.error(_("Cannot save {}: {}").format(self.filename,e))
 
+    def cb_filePreview(self,*args):
+        try:
+            text = self.fstab.getFileText()
+        except:
+            self.error(_("Cannot merging changes from {}: {}").format(self.filename,e))
+        html = '<pre>\n{}\n</pre>'.format(text)
+        title = _("Preview of {}".format(self.filename))
+        b = browser.browserDoc(wintitle=title,doctext=html) 
+          
     def cb_FileSaveAs(self,*args):
         dialog = Gtk.FileChooserDialog(_("Save Filesystem Table as..."), self.window,
             Gtk.FileChooserAction.SAVE,

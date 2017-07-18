@@ -145,20 +145,6 @@ class fstab:
     def write(self, filename=None):
         if not filename:
             filename = self.filename
-        tmp = tempfile.TemporaryFile(mode='w+')
-        line = 0
-        #print 'Making temp copy'
-        with open(self.filename) as f:
-            for l in f:
-                line = line + 1
-                c = l.strip()
-                e = self.searchEntryLineNo(line)
-                if e and e.modified:
-                    #print e.toStr()
-                    tmp.write(e.toStr()+'\n')
-                else:
-                    tmp.write(l)
-        tmp.seek(0,0)
         if os.path.exists(filename):
             try:
                 rento = filename+'~'
@@ -171,14 +157,32 @@ class fstab:
                 raise Exception(_("Cannot backup original file\n{}").format(e))
                 return
         try:
-            f = open(filename,'w')
-            for t in tmp:
-                f.write(t)
-            f.close()
-            tmp.close()
+            text = self.getFileText()
+        except:
+            raise  Exception(_("Cannot merge changes with original file({}): {}").format(filename,e))
+        try:
+            with open(filename,'w') as f:
+                f.write(text)
             self.filename = filename
         except Exception as e:
             raise Exception(_("Cannot write to {}\n{}").format(filename,e))
+
+    def getFileText(self):
+        tmp = tempfile.TemporaryFile(mode='w+')
+        line = 0
+        with open(self.filename) as f:
+            for l in f:
+                line = line + 1
+                c = l.strip()
+                e = self.searchEntryLineNo(line)
+                if e and e.modified:
+                    tmp.write(e.toStr()+'\n')
+                else:
+                    tmp.write(l)
+        tmp.seek(0,0)
+        text = tmp.read()
+        tmp.close()
+        return text
 
 
 if __name__ == "__main__":

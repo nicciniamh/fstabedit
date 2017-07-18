@@ -7,10 +7,21 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-harddisk</property>
   </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="xalign">0.4699999988079071</property>
+    <property name="stock">gtk-properties</property>
+  </object>
   <object class="GtkImage" id="image3">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-help</property>
+  </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-file</property>
   </object>
   <object class="GtkApplicationWindow" id="AppWindow">
     <property name="can_focus">False</property>
@@ -92,6 +103,23 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkImageMenuItem" id="FilePreview">
+                        <property name="label" translatable="yes">Pre_view file</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image4</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="cb_filePreview" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkImageMenuItem" id="FileQuit">
                         <property name="label">gtk-quit</property>
                         <property name="visible">True</property>
@@ -134,6 +162,23 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="cb_HelpAbout" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="&lt;separator2&gt;">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="Overview">
+                        <property name="label" translatable="yes">_Device Overview</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="image">image2</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="cb_helpOverview" swapped="no"/>
                       </object>
                     </child>
                   </object>
