@@ -17,7 +17,7 @@
 import os, sys, gi, re, glob, gettext, locale, platform, collections, copy
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject
-from lib import extrawidgets, fstab, dialogs, diskdevs, debug, browser
+import extrawidgets, fstab, dialogs, diskdevs, debug, browser
 
 locale.setlocale(locale.LC_ALL, '')
 _ = gettext.gettext
@@ -106,7 +106,7 @@ class entry:
 
         self.callback = callback
         self.builder = Gtk.Builder()
-        self.builder.add_from_file('fsentry.glade')
+        self.builder.add_from_file('lib/fsentry.glade')
         self.grid = self.builder.get_object('grid1')
         self.fstypecont = self.builder.get_object('fstypecont')
         self.devtypecont = self.builder.get_object('devtypecont')

@@ -23,4 +23,4 @@ mkdir -p "$destpath"
 cd "$destpath"
 tar xf /tmp/fstabedit.install/archive.tar.bz2
 cat fstabedit.desktop | sed -e "s^@EXEC^$startscript^g" -e "s^@PATH^$destpath^g">"$prod/usr/share/applications/fstabedit.desktop"
-ln -sf "$destpath/fstabedit.py" "$startscript"
+ln -sf "$destpath/bin/fstabedit" "$startscript"
