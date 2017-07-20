@@ -1,0 +1,16 @@
+#!/bin/bash
+insthome=/home/nicci/Development/fstabedit
+instdata="${insthome}/scripts/mkinstall.data"
+instdest="${insthome}"
+instfile="${instdest}/install.sh"
+archive_work="/tmp/$$archive"
+
+function cleanup() {
+    rm -f "${archive_work}*"
+}
+trap cleanup QUIT
+cd "${instdest}"
+tar --exclude=install.sh -cf "${archive_work}.tar" * 
+bzip2 -9 "${archive_work}.tar"
+base64 "${archive_work}.tar.bz2" >"${archive_work}.b64"
+cat "${instdata}/install.head" "${archive_work}.b64" "${instdata}/install.foot" >"${instdest}/install.sh"

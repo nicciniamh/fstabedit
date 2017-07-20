@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+
+#
+# Build html documents from markdown sources. 
+# 
+# Directory tree (base) is determined from the path above where this script is stored. 
+# other paths are relative to that path except docdata which is below this script's directory. 
+#
+
+import os, sys, glob, markdown
+workdir=os.path.dirname(os.path.realpath(sys.argv[0]))
+base=os.path.dirname(workdir)
+docdir=os.path.join(base,'docs')
+docdest=os.path.join(base,'htmldocs')
+docdata=os.path.join(workdir,'makehtmldoc.data')
+
+docignore=os.path.join(docdir,'.docignore')
+head=open(os.path.join(docdata,'header.html')).read()
+foot=open(os.path.join(docdata,'footer.html')).read()
+
+ignore=open(docignore).read().split('\n')
+
+md=markdown.Markdown(output_format="html5")
+for f in list(glob.glob('{}/*.md'.format(docdir))):
+    if not os.path.basename(f) in ignore:
+        body = open(f).read()
+        body = md.convert(body).replace('.md','.html')
+        md.reset()
+        oname = os.path.join(docdest,os.path.splitext(os.path.basename(f))[0])+'.html'
+        html = head + body + foot
+        open(oname,mode='wt').write(html)
+        print('wrote',oname)
+    else:
+        print('Ignoring ',f)

@@ -1,0 +1,26 @@
+EOF
+function getVariable() {
+    local tmp
+    var="$1"
+    prompt="$2"
+    default="$3"
+    echo "${prompt}"
+    read -p "[${default}]: " tmp
+    declare -g $var="$tmp"
+    [ "$tmp" == "" ] && declare -g $var="$default"
+}
+base64 -d archive.b64 >archive.tar.bz2
+cat << EOF
+This script will install the filesystem table editor, create a link to the executable
+in a specified folder, and install the destktop file.
+
+EOF
+getVariable destpath "Enter destination directory for program, libraries and data" "/usr/local/fstabedit"
+getVariable bindir "Enter Directory to store executable" "/usr/local/bin"
+startscript="${bindir}/fstabedit"
+desktop=fstabedit.desktop
+mkdir -p "$destpath"
+cd "$destpath"
+tar xf /tmp/fstabedit.install/archive.tar.bz2
+cat fstabedit.desktop | sed -e "s^@EXEC^$startscript^g" -e "s^@PATH^$destpath^g">"$prod/usr/share/applications/fstabedit.desktop"
+ln -sf "$destpath/fstabedit.py" "$startscript"

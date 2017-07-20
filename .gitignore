@@ -1,0 +1,8 @@
+__pycache__/
+admscripts/
+archives/
+testenv/
+work/
+etc/
+*.py[cod]
+*~

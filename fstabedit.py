@@ -30,7 +30,7 @@ _ = gettext.gettext
 gettext.install('fstabedit', '/usr/share/locale')
 from lib import fsentry, dialogs, fstab,  debug, browser
 defaultFstab = '/etc/fstab'
-#defaultFstab = '../etc/fstab'
+testFstab = 'etc/fstab'
 
 helpHome = pathlib.Path(os.path.abspath('htmldocs/index.html')).as_uri()
 helpToc = helpHome
@@ -190,7 +190,7 @@ class App:
         html = '<pre>\n{}\n</pre>'.format(text)
         title = _("Preview of {}".format(self.filename))
         b = browser.browserDoc(wintitle=title,doctext=html) 
-          
+
     def cb_FileSaveAs(self,*args):
         dialog = Gtk.FileChooserDialog(_("Save Filesystem Table as..."), self.window,
             Gtk.FileChooserAction.SAVE,
@@ -283,12 +283,19 @@ class App:
 if __name__ == "__main__":
     def enableDebug():
         debug.setdebug(True)
+    def testMode():
+        global defaultFstab, testFstab
+        debug.setdebug(True)
+        defaultFstab = testFstab
+        debug.debug('test mode enabled, default fstab is {}'.format(defaultFstab))
+
     debug.setdebug(False)
-    specialOps = [('-d',enableDebug),('--debug',enableDebug)]
+    specialOps = [(['-d','--debug'],enableDebug), (['-t','--test-mode'],testMode)]
     for op in specialOps:
-        if op[0] in sys.argv:
-            sys.argv.remove(op[0])
-            op[1]()
+        for o in op[0]:
+            if o in sys.argv:
+                sys.argv.remove(o)
+                op[1]()
     debug.debug('Debugging mode is set to {}'.format(debug.getdebug()))
     app = App()
     app.run(sys.argv)
