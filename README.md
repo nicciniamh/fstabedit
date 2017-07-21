@@ -12,13 +12,14 @@ This program is very linux specific. It might run on other *NIX systems but don'
 * GTK3 and python3-pygobject3 
 * [blkid(8)](http://man7.org/linux/man-pages/man8/blkid.8.html)
 
-Before testing **BACK UP SYSTEM FILES FIRST!**
+# Testing
+
+This code is very new and might break things! Before testing **BACK UP SYSTEM FILES FIRST!**
 
 When /etc/fstab is saved it will be backed up to /etc/fstab~ 
 
 Worst case recovery is you have a backup file is boot from a live cd and mount your root filesystem. Replace the broken /etc/fstab with your backup.
 
-# Testing
 In order to aid with testing, without destroying your system files, I have created a shell script that builds a chroot enviornment underwhich to perform testing. All system directories are included except /etc. 
 
 Create a directory to test in, then duplicate your /etc directory with:
