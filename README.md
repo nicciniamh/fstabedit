@@ -1,11 +1,17 @@
-Filesystem Table Editor
------------------------
+#Filesystem Table Editor
+#-----------------------
 A system administration application for Linux that provides a GUI for editing the filesystem table in [/etc/fstab](http://man7.org/linux/man-pages/man5/fstab.5.html) that probes the system for all partitions by device, uuid, partition uuid, partition label and filesystem labels, known filesystem types, and presents controls based on the type of mount a person wants based on device, uuid, etc. making those entries easily editable. A drop down for common filesystem options makes adding some of the more common options a little easier.
 
 This program is very linux specific. It might run on other *NIX systems but don't count on it and that mode of operation is unsupported.
 
 Before testing **BACK UP SYSTEM FILES FIRST!**
 
+# Requirements
+**This is important!**
+* bash 4.3 or higher for the installer.
+* Python 3.2 or higher
+* GTK3 and python3-pygobject3 
+* [blkid(8)](http://man7.org/linux/man-pages/man8/blkid.8.html)
 
 When /etc/fstab is saved it will be backed up to /etc/fstab~ 
 
