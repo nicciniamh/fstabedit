@@ -4,8 +4,6 @@ A system administration application for Linux that provides a GUI for editing th
 
 This program is very linux specific. It might run on other *NIX systems but don't count on it and that mode of operation is unsupported.
 
-Before testing **BACK UP SYSTEM FILES FIRST!**
-
 # Requirements
 **This is important!**
 
@@ -13,6 +11,8 @@ Before testing **BACK UP SYSTEM FILES FIRST!**
 * Python 3.2 or higher
 * GTK3 and python3-pygobject3 
 * [blkid(8)](http://man7.org/linux/man-pages/man8/blkid.8.html)
+
+Before testing **BACK UP SYSTEM FILES FIRST!**
 
 When /etc/fstab is saved it will be backed up to /etc/fstab~ 
 
