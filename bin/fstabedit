@@ -73,8 +73,10 @@ class App:
             self.tree.append_column(col)
         self.tree.connect('row-activated',self.cb_itemActivated, self.model)
         self.window.connect('delete-event', self.on_windowDelete)
+        self.window.connect('set-focus',self.cb_focus)
         builder.connect_signals(self)
         self.window.show_all()
+        self.window.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.ARROW))
         if defaultFstab.startswith('/etc'):
             if os.geteuid() != 0:
                 def response(response):
@@ -194,7 +196,9 @@ class App:
             self.error(_("Cannot merging changes from {}: {}").format(self.filename,e))
         html = '<pre>\n{}\n</pre>'.format(text)
         title = _("Preview of {}".format(self.filename))
-        b = browser.browserDoc(wintitle=title,doctext=html) 
+        self.window.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.WATCH))
+        b = browser.browserDoc(wintitle=title,doctext=html,parent=self.window) 
+        self.window.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.ARROW))
 
     def cb_FileSaveAs(self,*args):
         dialog = Gtk.FileChooserDialog(_("Save Filesystem Table as..."), self.window,
@@ -226,10 +230,19 @@ class App:
             self.app.quit()
 
     def cb_helpContents(self,*args):
-        b = browser.browserDoc(wintitle='Help',input=helpToc, home_uri=helpHome)
+        self.window.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.WATCH))
+        b = browser.browserDoc(wintitle='Help',input=helpToc, home_uri=helpHome, parent=self.window)
+        #self.window.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.ARROW))
 
     def cb_HelpAbout(self,*args):
-        b = browser.browserDoc(wintitle='Help',input=helpAbout, home_uri=helpHome)
+        self.window.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.WATCH))
+        b = browser.browserDoc(wintitle='Help',input=helpAbout, home_uri=helpHome, parent=self.window)
+        #self.window.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.ARROW))
+
+    def cb_focus(self,*args):
+        #self.window.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.ARROW))
+        pass
+
 
     def on_activate(self,app):
         pass
@@ -265,7 +278,7 @@ class App:
         return rval
 
     def cb_helpOverview(self,*args):
-        fsentry.deviceOverview()
+        fsentry.deviceOverview(self.window)
 
     def editfsEntry(self,index):
         def callbackfn(data):

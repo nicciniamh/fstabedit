@@ -16,7 +16,7 @@
 
 import os, sys, gi, re, glob, gettext, locale, platform, collections, copy
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, GObject
+from gi.repository import Gtk, GObject, Gdk
 import extrawidgets, fstab, dialogs, diskdevs, debug, browser
 
 locale.setlocale(locale.LC_ALL, '')
@@ -382,9 +382,9 @@ class entry:
         self.window.close()
 
     def formatOverview(self,*args):
-        deviceOverview(self.devices)
+        deviceOverview(self.window,self.devices)
 
-def deviceOverview(devices=None):
+def deviceOverview(window,devices=None):
     if not devices:
         devices = diskdevs.devices()
     fkeys = ['device','type','label','uuid', 'partlabel','partuuid']
@@ -413,4 +413,6 @@ def deviceOverview(devices=None):
     </table>
     </body>
     </html>'''.format('\n'.join(lines))
-    b = browser.browserDoc(wintitle="Device Overview",doctext=htmldoc)    
+    window.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.WATCH))
+    b = browser.browserDoc(wintitle="Device Overview",doctext=htmldoc, parent=window)
+    window.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.WATCH))

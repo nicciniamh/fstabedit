@@ -175,6 +175,7 @@ class browserDoc:
             button.connect('clicked',self.navButtonClicked)
         self.close_button = builder.get_object('close')
         self.window.connect('delete-event',self.quit)
+        self.window.connect('set-focus',self.cb_focus)
         self.close_button.connect('clicked',self.quit)
 
         self.view = WebKit.WebView()
@@ -260,6 +261,10 @@ class browserDoc:
             Gtk.main_quit()
         else:
             self.window.destroy()
+
+    def cb_focus(self,*args):
+        if self.parent:
+            self.parent.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.ARROW))
 
 if __name__ == "__main__":
     standalone = True
