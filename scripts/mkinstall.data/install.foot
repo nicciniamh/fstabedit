@@ -22,5 +22,7 @@ desktop=fstabedit.desktop
 mkdir -p "$destpath"
 cd "$destpath"
 tar xf /tmp/fstabedit.install/archive.tar.bz2
-cat fstabedit.desktop | sed -e "s^@EXEC^$startscript^g" -e "s^@PATH^$destpath^g">"$prod/usr/share/applications/fstabedit.desktop"
+cat fstabedit.desktop | sed -e "s^@EXEC^$startscript^g" -e "s^@PATH^$destpath^g">/tmp/fstabedit.desktop
+xdg-desktop-menu install --novendor /tmp/fstabedit.desktop >/dev/nul 2>&1 || echo "Warning: No desktop entry installed."
+rm /tmp/fstabedit.desktop
 ln -sf "$destpath/bin/fstabedit" "$startscript"
