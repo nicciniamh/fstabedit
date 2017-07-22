@@ -23,7 +23,6 @@ from gi.repository.GdkPixbuf import Pixbuf
 #
 path=os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
 os.chdir(path)
-print('Running from',path,os.getcwd())
 if not os.path.exists('lib'):
     sys.stderr.write('Cannot find library direcrory')
     sys.exit(1)

@@ -1,4 +1,29 @@
 #!/bin/bash
+read -r -d '' PYTEST <<-'EOF'
+import os, sys
+req = '''
+* bash 4.3 or higher for the installer.
+* Python 3.2 or higher
+* GTK3 and python3-pygobject3 
+* blkid(8)
+'''
+
+def error(exc):
+    sys.stderr.write('Errors checking environment {}\n'.format(exc))
+    sys.stderr.write('These libraries and tools are required for installation:\n{}\n'.format(req))
+    sys.stderr.write('Please check your distributions installation instructions to install these packages.\n')
+    sys.exit(1)
+
+try:
+    import  gi, re, gettext, locale, pathlib
+    gi.require_version('Gtk', '3.0')
+    from gi.repository import Gtk, GObject, Gdk
+except Exception as e:
+    error(e)
+sys.exit(0)
+EOF
+echo "$PYTEST" | /usr/bin/env python3 || exit 1
+
 cleanup() {
     rm -rf /tmp/fstabedit.install 
 }
