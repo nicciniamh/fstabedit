@@ -4,6 +4,8 @@ A system administration application for Linux that provides a GUI for editing th
 
 This program is very linux specific. It might run on other *NIX systems but don't count on it and that mode of operation is unsupported.
 
+See [program documentation](index.md) here.
+
 # Requirements
 **This is important!**
 
