@@ -273,13 +273,19 @@ class browserDoc(object):
 
 
 if __name__ == "__main__":
+    path=os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0])))
+    os.chdir(path)
     standalone = True
-    Gtk.init()
+    docs = None
     if len(sys.argv) > 1:
         docs = sys.argv[1]
         if not docs.startswith('http'):
             docs = os.path.abspath(docs)
             docs = 'file://'+docs
+    elif 'viewdocs' in sys.argv[0]:
+        docs = 'file://'+os.path.abspath('htmldocs/index.html')
 
+    if docs:
+        Gtk.init()
         b = browserDoc(wintitle='Browser', input=docs, home_uri=docs)
         Gtk.main()
