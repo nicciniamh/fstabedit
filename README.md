@@ -1,8 +1,11 @@
-# Filesystem Table Editor
+|[TOC](index.md)|[Overview](overview.md)|[Main Window](main.md)|[Entry Editor](entryeditor.md)|[License](license.md)|[About](about.md)|[README](README.md)
 -----------------------
+
 A system administration application for Linux that provides a GUI for editing the filesystem table in [/etc/fstab](http://man7.org/linux/man-pages/man5/fstab.5.html) that probes the system for all partitions by device, uuid, partition uuid, partition label and filesystem labels, known filesystem types, and presents controls based on the type of mount a person wants based on device, uuid, etc. making those entries easily editable. A drop down for common filesystem options makes adding some of the more common options a little easier.
 
 This program is very linux specific. It might run on other *NIX systems but don't count on it and that mode of operation is unsupported.
+
+See [program documentation](index.md) here.
 
 # Requirements
 **This is important!**
