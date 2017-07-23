@@ -13,10 +13,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
 import os, sys, re, tempfile, shlex
+if float(sys.version[:3]) < 3:
+    from builtins import range
+    from builtins import open
+    from builtins import int
+    from builtins import object
+    from future import standard_library
+    standard_library.install_aliases()
 
-class fsentry:
+class fsentry(object):
     def __init__(self,**kwargs):
         fields = ['dev','devtype','mountpoint','fstype','fsopts','fsfreq','fspass',"new","line"]
         self.new,self.modified = (False, False)
@@ -72,7 +82,7 @@ class fsentry:
             return True
         return False
 
-class fstab:
+class fstab(object):
     def __init__(self, fstabFilename=None):
         self.entries = []
         self.filename = fstabFilename

@@ -14,7 +14,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import os, sys, gi, re, gettext, locale, pathlib
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+import os, sys, gi, re, gettext, locale
+if float(sys.version[:3]) < 3:
+    from builtins import range
+    from builtins import int
+    from builtins import object
+    from future import standard_library
+    standard_library.install_aliases()
+import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject, Gdk
 from gi.repository.GdkPixbuf import Pixbuf
@@ -37,11 +48,11 @@ gettext.install('fstabedit', '/usr/share/locale')
 defaultFstab = '/etc/fstab'
 testFstab = 'etc/fstab'
 
-helpHome = pathlib.Path(os.path.abspath('htmldocs/index.html')).as_uri()
+helpHome = 'file://'+os.path.abspath('htmldocs/index.html')
+helpAbout = 'file://'+os.path.abspath('htmldocs/about.html')
 helpToc = helpHome
-helpAbout = pathlib.Path(os.path.abspath('htmldocs/about.html')).as_uri()
 
-class App:
+class App(object):
     def __init__(self):
         self.listcols = []
         self.app = Gtk.Application.new('com.ducksfeet.fstabedit',0)
@@ -62,7 +73,7 @@ class App:
         self.window.set_default_size(640,480)
         self.app.add_window(self.window)
         self.box = builder.get_object('Content')
-        self.model = Gtk.ListStore(str,str,str,int)
+        self.model = Gtk.ListStore(GObject.TYPE_STRING,GObject.TYPE_STRING,GObject.TYPE_STRING, GObject.TYPE_INT)
         self.tree = Gtk.TreeView(model=self.model)
         self.box.add(self.tree)
         self.listcols = [_("Device"),_("Mount Point"),_("Type")]

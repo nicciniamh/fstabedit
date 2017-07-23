@@ -13,10 +13,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import os, sys, pathlib, gi, re, webbrowser
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+import sys
+if float(sys.version[:3]) < 3:
+    from builtins import object
+    from future import standard_library
+    standard_library.install_aliases()
+import os, webbrowser, re, gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('WebKit', '3.0')
-from gi.repository import Gtk, GObject, Gdk, WebKit
+from gi.repository import Gtk, WebKit
+
 uiXml = '''
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.18.3 -->
@@ -134,7 +144,7 @@ uiXml = '''
 </interface>
 '''
 standalone = False
-class browserDoc:
+class browserDoc(object):
     def __init__(self,**kwargs):
         self.window = None
         allowed_args = ['input','doctext','show_navbuttons','home_uri',"base_uri", "wintitle","parent"]
@@ -175,7 +185,6 @@ class browserDoc:
             button.connect('clicked',self.navButtonClicked)
         self.close_button = builder.get_object('close')
         self.window.connect('delete-event',self.quit)
-        self.window.connect('set-focus',self.cb_focus)
         self.close_button.connect('clicked',self.quit)
 
         self.view = WebKit.WebView()
@@ -262,9 +271,6 @@ class browserDoc:
         else:
             self.window.destroy()
 
-    def cb_focus(self,*args):
-        if self.parent:
-            self.parent.get_window().set_cursor(Gdk.Cursor(Gdk.CursorType.ARROW))
 
 if __name__ == "__main__":
     standalone = True
@@ -273,7 +279,7 @@ if __name__ == "__main__":
         docs = sys.argv[1]
         if not docs.startswith('http'):
             docs = os.path.abspath(docs)
-            docs = pathlib.Path(docs).as_uri()
+            docs = 'file://'+docs
 
         b = browserDoc(wintitle='Browser', input=docs, home_uri=docs)
         Gtk.main()

@@ -27,9 +27,18 @@
 # A lot of this functionality duplicates what the shell command blkid does and will 
 # attempt to use the output of blkid before probing /dev and /proc to get this information
 
+from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
 import os, sys, re, glob, subprocess, shlex
+if float(sys.version[:3]) < 3:
+    from builtins import open
+    from builtins import object
+    from future import standard_library
+    standard_library.install_aliases()
 
-class devices:
+class devices(object):
     '''
     Class to query partition and filesystem information using various attributes.
 

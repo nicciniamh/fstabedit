@@ -13,8 +13,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-import os, sys, gi, re, glob, gettext, locale, platform, collections, copy
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+import os, sys, re, glob, gettext, locale, platform, collections, copy
+if float(sys.version[:3]) < 3:
+    from builtins import open
+    from builtins import range
+    from builtins import object
+    from future import standard_library
+    standard_library.install_aliases()
+import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject, Gdk
 import extrawidgets, fstab, dialogs, diskdevs, debug, browser
@@ -53,7 +63,7 @@ fsTypeMap.sort()
 
 
 PARTFUNC_LIST,PARTFUNC_QUERY, PARTFUNC_WIDGET = list(range(0,3))
-class entry:
+class entry(object):
     ''' 
     Class for a UI to manage an entry in an fstab file. Widgets are dynamically changed 
     to use specific elements present on system. 
