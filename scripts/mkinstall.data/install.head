@@ -1,16 +1,9 @@
 #!/bin/bash
 read -r -d '' PYTEST <<-'EOF'
 import os, sys
-req = '''
-* bash 4.3 or higher for the installer.
-* Python 3.2 or higher
-* GTK3 and python3-pygobject3 
-* blkid(8)
-'''
-
 def error(exc):
     sys.stderr.write('Errors checking environment {}\n'.format(exc))
-    sys.stderr.write('These libraries and tools are required for installation:\n{}\n'.format(req))
+    sys.stderr.write('These libraries and tools are required for installation:\n')
     sys.stderr.write('Please check your distributions installation instructions to install these packages.\n')
     sys.exit(1)
 
@@ -28,6 +21,19 @@ cleanup() {
     rm -rf /tmp/fstabedit.install 
 }
 trap cleanup EXIT
+error() {
+  local parent_lineno="$1"
+  local message="$2"
+  local code="${3:-1}"
+  if [[ -n "$message" ]] ; then
+    die "Error on or near line ${parent_lineno}: ${message}; exiting with status ${code}"
+  else
+    die "Error on or near line ${parent_lineno}; exiting with status ${code}"
+  fi
+  die "error handler failed, ${parent_lineno}:${code}"
+}
+trap 'error ${LINENO}' ERR
+
 prod=""
 if [ "$prod" == "" ] ; then
     if [[ $EUID -ne 0 ]]; then

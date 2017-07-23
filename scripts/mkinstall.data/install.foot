@@ -1,28 +1,53 @@
 EOF
 function getVariable() {
     local tmp
-    var="$1"
-    prompt="$2"
-    default="$3"
-    echo "${prompt}"
-    read -p "[${default}]: " tmp
-    declare -g $var="$tmp"
-    [ "$tmp" == "" ] && declare -g $var="$default"
+    prompt="$1"
+    default="$2"
+    echo -en "${prompt}\n[${default}]: " >&2
+    read tmp
+    if [ "$tmp" == "" ] ; then
+        tmp="$default"
+    fi
+    echo $tmp
 }
-base64 -d archive.b64 >archive.tar.bz2
+function die() {
+    echo $* >&2
+    echo "Installation aborted.\n"
+    exit 1
+}
+python_required="python3"
+python_ver_required="3.2"
 cat << EOF
 This script will install the filesystem table editor, create a link to the executable
 in a specified folder, and install the destktop file.
 
+The following libraries or tools are required:
+
+* bash 4.2 or higher, base64(1) and bzip(1) for the installer.
+* Python ${python_ver_required} or higher
+* GTK3 and python3-pygobject3 
+* blkid(8)
+
 EOF
-getVariable destpath "Enter destination directory for program, libraries and data" "/usr/local/fstabedit"
-getVariable bindir "Enter Directory to store executable" "/usr/local/bin"
+read -p "Press Enter to contnue or ^C to abort: "
+for prog in ${python_required} blkid base64 bzip2; do
+    which $prog >/dev/null 2>&1 || die "Cannot find ${prog} on your system.\nThe installer cannot run without it. Please fix and re-run this script."
+done    
+base64 -d archive.b64 | bzip2 -dc - >archive.tar
+destpath=$(getVariable  "Enter destination directory for program, libraries and data" "/usr/local/fstabedit")
+bindir=$(getVariable "Enter Directory to store executable" "/usr/local/bin")
 startscript="${bindir}/fstabedit"
+cat << EOF
+Ready to copy files:
+  Program data and libraries in ${destpath}
+  Program executable to be installed in ${startscript}
+
+EOF
+read -p "Press Enter to contnue or ^C to abort: "
 desktop=fstabedit.desktop
 mkdir -p "$destpath"
 cd "$destpath"
-tar xf /tmp/fstabedit.install/archive.tar.bz2
-cat fstabedit.desktop | sed -e "s^@EXEC^$startscript^g" -e "s^@PATH^$destpath^g">/tmp/fstabedit.desktop
-xdg-desktop-menu install --novendor /tmp/fstabedit.desktop >/dev/nul 2>&1 || echo "Warning: No desktop entry installed."
-rm /tmp/fstabedit.desktop
+tar xf /tmp/fstabedit.install/archive.tar
+sed -i -e 's|@EXEC|'${startscript}'|g'  -e 's|@PATH|'${destpath}'|g' fstabedit.desktop
+xdg-desktop-menu install --novendor fstabedit.desktop >/dev/nul 2>&1 || echo "Warning: No desktop entry installed."
 ln -sf "$destpath/bin/fstabedit" "$startscript"
