@@ -1,0 +1,33 @@
+<!doctype HTML>
+<head>
+<title>Filesystem Table Editor</title>
+</head>
+<body>
+<h1><img src="disk-stack.png" height="48" width="48">Filesystem Table Editor</h1><h1>Filesystem Table Editor</h1>
+<hr>
+<p>A system administration application for Linux that provides a GUI for editing the filesystem table in <a href="http://man7.org/linux/man-pages/man5/fstab.5.html">/etc/fstab</a> that probes the system for all partitions by device, uuid, partition uuid, partition label and filesystem labels, known filesystem types, and presents controls based on the type of mount a person wants based on device, uuid, etc. making those entries easily editable. A drop down for common filesystem options makes adding some of the more common options a little easier.</p>
+<p>This program is very linux specific. It might run on other *NIX systems but don't count on it and that mode of operation is unsupported.</p>
+<h1>Requirements</h1>
+<p><strong>This is important!</strong></p>
+<ul>
+<li>bash 4 or higher, <a href="http://man7.org/linux/man-pages/man1/base64.1.html">base64(1)</a> and bzip2 for the installer.</li>
+<li>Python 2.6 or higher</li>
+<li>GTK3 and python3-pygobject3 </li>
+<li><a href="http://man7.org/linux/man-pages/man8/blkid.8.html">blkid(8)</a></li>
+</ul>
+<h1>Testing</h1>
+<p>This code is very new and might break things! Before testing <strong>BACK UP SYSTEM FILES FIRST!</strong></p>
+<p>When /etc/fstab is saved it will be backed up to /etc/fstab~ </p>
+<p>Worst case recovery is you have a backup file is boot from a live cd and mount your root filesystem. Replace the broken /etc/fstab with your backup.</p>
+<p>In order to aid with testing, without destroying your system files, I have created a shell script that builds a chroot enviornment underwhich to perform testing. All system directories are included except /etc. </p>
+<p>Create a directory to test in, then duplicate your /etc directory with:</p>
+<pre><code>cd &lt;test-environment-dir&gt; ; tar cf - /etc | tar xf -
+</code></pre>
+<p>then run:</p>
+<pre><code>bash &lt;path-to-script&gt;/testenv.sh
+</code></pre>
+<p>You may be prompted for your password when sudo(8) is run. </p>
+<h1>Acknowldgements</h1>
+<p>This application was developed extensive use of Google, Stack Exchange for help and inspiration. Coding was done using Sublime Text, on Linux Mint 18.2 Sonya. 
+Props to my family for hearing me swear at code and dive so deep into coding I ingore everying else. </p></body>
+</html>
