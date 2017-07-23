@@ -1,3 +1,5 @@
+|[TOC](index.md)|[Overview](overview.md)|[Main Window](main.md)|[Entry Editor](entryeditor.md)|[License](license.md)|[About](about.md)|[README](README.md)
+-----------------------
 # Main Window
 In the main window for the filesystem table editor ([fstabedit](https://github.com/nicciniamh/fstabedit)) you can select and edit each fstab entry. The main window shows an overview of each entry, sparing some details for the [entry editor](entryeditor.md)
 
@@ -25,4 +27,3 @@ Save the current file to a new location.
 ### Quit
 Quit the application.
 
-[Next - Entry Editor](entryeditor.md)
