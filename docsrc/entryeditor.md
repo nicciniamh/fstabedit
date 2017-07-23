@@ -1,8 +1,4 @@
-<small>
-[[TOC](docs/index.md)][[Overview](docs/overview.md)][[Main Window](docs/main.md)][[Entry Editor](docs/entryeditor.md)][[License](docs/license.md)][[About](docs/about.md)]
-</small>
------------------------
-
+[//]:NAV
 # Entry Editor
 ## Overview
 For each filesystem there is an entry in [fstab(5)](http://man7.org/linux/man-pages/man5/fstab.5.html). There are six fields for each entry: node, mount point, filesystem type, file system options, fs freq, and fspassno. I have added another virtual field, *Device Type*

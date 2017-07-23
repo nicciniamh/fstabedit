@@ -7,26 +7,39 @@
 # other paths are relative to that path except docdata which is below this script's directory. 
 #
 
-import os, sys, glob, markdown
+import os, sys, glob, markdown, re
 workdir=os.path.dirname(os.path.realpath(sys.argv[0]))
 base=os.path.dirname(workdir)
-docdir=os.path.join(base,'docs')
-docdest=os.path.join(base,'htmldocs')
+docsrc=os.path.join(base,'docsrc')
+htmldest=os.path.join(base,'htmldocs')
+docdest=os.path.join(base,'docs')
 docdata=os.path.join(workdir,'makehtmldoc.data')
+try:
+    navdata = open(os.path.join(docdata,'docnav.md')).read()
+except:
+    navdata = ''
 
-docignore=os.path.join(docdir,'.docignore')
+navmatch = '[//]:NAV'
+
+docignore=os.path.join(docsrc,'.docignore')
 head=open(os.path.join(docdata,'header.html')).read()
 foot=open(os.path.join(docdata,'footer.html')).read()
-
 ignore=open(docignore).read().split('\n')
+htmlfixes = [(r'(docs\/)([A-z]*)(\.md)',r'htmldocs/\2.html'),(r'([A-z]*)(\.md)',r'\1.html')]
 
 md=markdown.Markdown(output_format="html5")
-for f in list(glob.glob('{}/*.md'.format(docdir))):
+for f in list(glob.glob('{}/*.md'.format(docsrc))):
     if not os.path.basename(f) in ignore:
-        body = open(f).read()
-        body = md.convert(body).replace('.md','.html')
+        body = open(f).read().replace(navmatch,navdata)
+        oname = os.path.join(docdest,os.path.basename(f))
+        open(oname,'w').write(body)
+        print('wrote',oname)
+        for fix in htmlfixes:
+            body = re.sub(fix[0],fix[1],body)
+
+        body = md.convert(body)
         md.reset()
-        oname = os.path.join(docdest,os.path.splitext(os.path.basename(f))[0])+'.html'
+        oname = os.path.join(htmldest,os.path.splitext(os.path.basename(f))[0])+'.html'
         html = head + body + foot
         open(oname,mode='wt').write(html)
         print('wrote',oname)

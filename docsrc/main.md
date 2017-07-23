@@ -1,8 +1,4 @@
-<small>
-[[TOC](docs/index.md)][[Overview](docs/overview.md)][[Main Window](docs/main.md)][[Entry Editor](docs/entryeditor.md)][[License](docs/license.md)][[About](docs/about.md)]
-</small>
------------------------
-
+[//]:NAV
 # Main Window
 In the main window for the filesystem table editor ([fstabedit](https://github.com/nicciniamh/fstabedit)) you can select and edit each fstab entry. The main window shows an overview of each entry, sparing some details for the [entry editor](entryeditor.md)
 

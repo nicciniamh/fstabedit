@@ -1,8 +1,4 @@
-<small>
-[[TOC](docs/index.md)][[Overview](docs/overview.md)][[Main Window](docs/main.md)][[Entry Editor](docs/entryeditor.md)][[License](docs/license.md)][[About](docs/about.md)]
-</small>
------------------------
-
+[//]:NAV
 #About 
 Program to edit /etc/fstab or similar files. Please see the [project home](https://github.com/nicciniamh/fstabedit)
 
