@@ -7,8 +7,8 @@ This program is very linux specific. It might run on other *NIX systems but don'
 # Requirements
 **This is important!**
 
-* bash 4.3 or higher for the installer.
-* Python 3.2 or higher
+* bash 4 or higher, [base64(1)](http://man7.org/linux/man-pages/man1/base64.1.html) and bzip2 for the installer.
+* Python 2.6 or higher
 * GTK3 and python3-pygobject3 
 * [blkid(8)](http://man7.org/linux/man-pages/man8/blkid.8.html)
 
