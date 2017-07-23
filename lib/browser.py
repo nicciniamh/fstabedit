@@ -147,13 +147,14 @@ standalone = False
 class browserDoc(object):
     def __init__(self,**kwargs):
         self.window = None
-        allowed_args = ['input','doctext','show_navbuttons','home_uri',"base_uri", "wintitle","parent"]
+        allowed_args = ['input','doctext','winicon','show_navbuttons','home_uri',"base_uri", "wintitle","parent"]
         self.input = None
         self.doctext = None
         self.show_navbuttons = False
         self.home_uri = None
         self.base_uri = None
         self.wintitle = None
+        self.winicon = None
         self.parent = None
         for k,v in kwargs.items():
             if k in allowed_args:
@@ -169,6 +170,8 @@ class browserDoc(object):
         if self.parent:
             self.window.set_transient_for(self.parent)
         self.window.show_all()
+        if self.winicon:
+            self.window.set_icon_name(Gtk.STOCK_HARDDISK)
         self.setButtons()
 
     def setupWindow(self):
@@ -282,10 +285,12 @@ if __name__ == "__main__":
         if not docs.startswith('http'):
             docs = os.path.abspath(docs)
             docs = 'file://'+docs
+            title = 'Help Browser'
     elif 'viewdocs' in sys.argv[0]:
         docs = 'file://'+os.path.abspath('htmldocs/index.html')
+        title = 'Help Viewer'
 
     if docs:
         Gtk.init()
-        b = browserDoc(wintitle='Browser', input=docs, home_uri=docs)
+        b = browserDoc(winicon=True,wintitle=title, input=docs, home_uri=docs)
         Gtk.main()
